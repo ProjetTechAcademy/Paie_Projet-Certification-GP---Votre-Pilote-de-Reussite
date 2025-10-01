@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet Certification GP - Votre Pilote de Réussite</title>
+    <!-- Les icônes pour le fun et le dynamisme ! -->
+    <script src="https://kit.fontawesome.com/1c4b1c7131.js" crossorigin="anonymous"></script>
+    <!-- Les polices pour le côté classe et lisible -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 🎨 VOTRE PALETTE DE COULEURS SUR-MESURE 🎨 --- */
+        :root {
+            --orange: #f39c12;
+            --fuchsia: #d81b60;
+            --rose: #e91e63;
+            --bordeaux: #880e4f;
+            --bleu-nuit: #192a56;
+            --bleu-ciel: #3498db;
+            --bronze: #cd7f32;
+            --terracotta: #c0392b;
+            --creme: #f9f6f2;
+            --ecru: #fdf5e6;
+            --texte-clair: #ffffff;
+            --texte-sombre: #2c3e50;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --gradient-action: linear-gradient(45deg, var(--fuchsia), var(--orange));
+            --discord-mauve: #7289da;
+            --whatsapp-vert: #25D366;
+        }
+
+        /* --- 🖌️ STYLE GÉNÉRAL "BEAU GOSSE" 🖌️ --- */
+        *, *::before, *::after { box-sizing: border-box; }
+        body { font-family: 'Lato', sans-serif; background-color: var(--ecru); color: var(--texte-sombre); margin: 0; padding: clamp(15px, 3vw, 30px); line-height: 1.7; overflow-x: hidden; }
+        .container { max-width: 1200px; margin: auto; background: var(--texte-clair); border-radius: 20px; box-shadow: var(--shadow); padding: clamp(20px, 4vw, 40px); border: 1px solid rgba(0,0,0,0.05); }
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; font-weight: 900; color: var(--bleu-nuit); text-align: center; }
+        h1 { font-size: clamp(2em, 5vw, 3em); color: var(--bordeaux); text-shadow: 2px 2px 4px rgba(0,0,0,0.1); margin-bottom: 0; }
+        h2 { font-size: clamp(1.8em, 4vw, 2.5em); border-bottom: 4px solid var(--terracotta); display: inline-block; padding-bottom: 10px; margin-bottom: 30px; width: 100%; }
+        section { margin-bottom: 50px; }
+
+        /* --- 🚀 SECTION SÉLECTION DE SESSION 🚀 --- */
+        #session-selector-section, #setup-section { background-color: var(--creme); padding: 30px; border-radius: 15px; border-left: 8px solid var(--bleu-nuit); margin-bottom: 40px; }
+        .selector-group { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+        .selector-group > div { flex: 1; min-width: 200px; }
+        .selector-group label { display: block; margin-bottom: 10px; font-weight: 700; }
+        .selector-group select { width: 100%; padding: 15px; border-radius: 8px; border: 2px solid #ddd; font-family: 'Lato', sans-serif; font-size: 1.1em; background-color: white; }
+        #session-2-options { margin-top: 20px; padding-top: 20px; border-top: 2px dashed var(--bleu-ciel); }
+        #session-2-options h4 { margin-top: 0; text-align: left; }
+        .checkbox-group label { display: inline-flex; align-items: center; margin-right: 20px; cursor: pointer; font-size: 1.1em; }
+        .checkbox-group input { margin-right: 10px; width: 20px; height: 20px; }
+
+        /* --- ⚙️ SECTION CONFIGURATION INTERACTIVE ⚙️ --- */
+        #bloc-order-container { padding: 0; list-style: none; }
+        #bloc-order-container li { background-color: var(--texte-clair); margin: 15px 0; padding: 15px; border-radius: 10px; cursor: grab; display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-family: 'Montserrat', sans-serif; font-size: 1.1em; box-shadow: 0 4px 10px rgba(0,0,0,0.08); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        #bloc-order-container li .bloc-name { display: flex; align-items: center; flex-grow: 1; }
+        #bloc-order-container li i { margin-right: 15px; font-size: 1.5em; }
+        .duration-input { width: 80px; padding: 8px; text-align: center; font-size: 1.1em; font-weight: bold; border: 2px solid #ddd; border-radius: 5px; margin-left: 20px; margin-right: 20px; }
+        .duration-input:focus { outline: 2px solid var(--orange); }
+        .bloc-1 { border-left: 10px solid var(--fuchsia); }
+        .bloc-2 { border-left: 10px solid var(--bleu-ciel); }
+        .bloc-3 { border-left: 10px solid var(--orange); }
+        .dragging { opacity: 0.6; background: var(--ecru); }
+        #planning-summary { text-align: center; font-size: 1.2em; font-weight: bold; margin-top: 20px; padding: 15px; border-radius: 8px; background-color: var(--ecru); transition: all 0.3s ease; }
+        button { display: inline-block; width: 100%; padding: 20px; font-family: 'Montserrat', sans-serif; font-size: 1.3em; font-weight: 700; color: var(--texte-clair); background: var(--gradient-action); border: none; border-radius: 10px; cursor: pointer; margin-top: 20px; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(216, 27, 96, 0.3); }
+        button:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(216, 27, 96, 0.4); }
+        button:active { transform: translateY(-2px); }
+
+        /* --- 🗓️ SECTION PLANNING DYNAMIQUE 🗓️ --- */
+        .phase-card { background: var(--creme); padding: 25px; border-radius: 15px; margin-bottom: 25px; border-left: 8px solid; box-shadow: var(--shadow); animation: fadeIn 0.6s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .phase-header { display: flex; align-items: center; gap: 20px; margin-bottom: 15px; }
+        .phase-header .fas { font-size: 2em; width: 40px; text-align: center; }
+        .phase-title { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1.8em; margin: 0; text-align: left; }
+        .phase-dates { font-style: italic; color: #555; font-size: 1.1em; }
+        .phase-discovery { border-color: var(--bronze); color: var(--bronze); }
+        .phase-bloc-1 { border-color: var(--fuchsia); color: var(--fuchsia); }
+        .phase-bloc-2 { border-color: var(--bleu-ciel); color: var(--bleu-ciel); }
+        .phase-bloc-3 { border-color: var(--orange); color: var(--orange); }
+        .phase-review { border-color: var(--bordeaux); color: var(--bordeaux); }
+        .phase-submit { border-color: #27ae60; color: #27ae60; }
+        .warning { background-color: var(--terracotta); color: var(--texte-clair); padding: 20px; border-radius: 10px; margin-top: 20px; font-weight: 700; font-size: 1.1em; text-align: center; }
+        .warning i { margin-right: 10px; }
+
+        /* --- ✨ SECTION CONSEILS EN ACCORDÉON ✨ --- */
+        .accordion-item { margin-bottom: 10px; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .accordion-header { background-color: var(--bleu-nuit); color: var(--texte-clair); padding: 20px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 1.2em; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.3s ease; }
+        .accordion-header:hover { background-color: var(--bordeaux); }
+        .accordion-content { padding: 0 25px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out, padding 0.4s ease-out; background-color: var(--creme); }
+        .accordion-item.active .accordion-content { max-height: 1000px; padding: 25px; }
+        .accordion-header .icon { font-size: 1.5em; transition: transform 0.3s ease; font-weight: bold; }
+        .accordion-item.active .accordion-header .icon { transform: rotate(45deg); }
+
+        /* --- 🤔 QUIZ & FEEDBACK 🤔 --- */
+        #quiz-section { background-color: var(--creme); padding: 30px; border-radius: 15px; }
+        .quiz-question { margin-bottom: 20px; font-weight: bold; }
+        .quiz-options label { display: block; margin: 8px 0; cursor: pointer; padding: 10px; border-radius: 5px; transition: background-color 0.2s; }
+        .quiz-options label:hover { background-color: #f0f0f0; }
+        #quiz-result { font-weight: bold; text-align: center; margin-top: 25px; padding: 15px; border-radius: 8px; display: none; font-size: 1.2em; animation: popIn 0.5s ease; }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        
+        /* --- 🌐 SECTION COMMUNAUTÉ 🌐 --- */
+        #community-section .community-box { background: var(--creme); padding: 25px; border-radius: 15px; margin-bottom: 25px; border-left: 8px solid var(--bleu-ciel); }
+        #community-section h3 { text-align: left; }
+        #community-section a { font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+        #community-section a.discord-link { color: var(--discord-mauve); }
+        #community-section a.whatsapp-link { color: var(--whatsapp-vert); }
+        #community-section a.other-link { color: var(--fuchsia); }
+        #community-section a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-rocket"></i> Projet Certification GP <i class="fas fa-rocket"></i></h1>
+            <p style="text-align: center; font-size: 1.3em; color: var(--texte-sombre);">Votre Pilote de Réussite interactif & sur-mesure ! 🧑‍✈️</p>
+        </header>
+
+        <section id="session-selector-section">
+             <h2><i class="fas fa-flag-checkered"></i> 1. Choisissez Votre Course</h2>
+             <div class="selector-group">
+                <div>
+                    <label for="promo-select">🎓 Votre Promotion :</label>
+                    <select id="promo-select">
+                        <option value="de-vinci">De Vinci (Automne/Hiver 2025-26)</option>
+                        <option value="pasteur">Pasteur (Printemps/Été 2026)</option>
+                        <option value="copernic">Copernic (Automne/Hiver 2026-27)</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="session-select">🏁 Votre Session :</label>
+                    <select id="session-select">
+                        <option value="s1">Session 1</option>
+                        <option value="s2">Session 2 (Rattrapage)</option>
+                    </select>
+                </div>
+             </div>
+             <div id="session-2-options" style="display: none;">
+                <h4>🏆 Blocs déjà validés en Session 1 :</h4>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="validated-bloc-cb" data-bloc="Bloc 1"> Bloc 1</label>
+                    <label><input type="checkbox" class="validated-bloc-cb" data-bloc="Bloc 2"> Bloc 2</label>
+                    <label><input type="checkbox" class="validated-bloc-cb" data-bloc="Bloc 3"> Bloc 3</label>
+                </div>
+             </div>
+        </section>
+
+        <section id="setup-section" style="border-left-color: var(--orange);">
+            <h2><i class="fas fa-cogs"></i> 2. Configurez Votre Stratégie de Projet</h2>
+            <p>En tant que chef(fe) de projet, vous définissez vos priorités et allouez vos ressources (le temps !).</p>
+            
+            <h3>A. Mon Ordre de Travail (Glissez-déposez) :</h3>
+            <ul id="bloc-order-container">
+                <li draggable="true" class="bloc-1" data-bloc="Bloc 1">
+                    <span class="bloc-name"><i class="fas fa-calculator" style="color: var(--fuchsia);"></i> Bloc 1 : Technique de Paie</span>
+                    <div><input type="number" class="duration-input" value="9" min="0" step="0.5"> Jours</div>
+                    <i class="fas fa-grip-lines"></i>
+                </li>
+                <li draggable="true" class="bloc-2" data-bloc="Bloc 2">
+                    <span class="bloc-name"><i class="fas fa-folder-open" style="color: var(--bleu-ciel);"></i> Bloc 2 : Gestion Administrative</span>
+                    <div><input type="number" class="duration-input" value="4" min="0" step="0.5"> Jours</div>
+                    <i class="fas fa-grip-lines"></i>
+                </li>
+                <li draggable="true" class="bloc-3" data-bloc="Bloc 3">
+                    <span class="bloc-name"><i class="fas fa-chart-line" style="color: var(--orange);"></i> Bloc 3 : Analyse & Veille</span>
+                     <div><input type="number" class="duration-input" value="6" min="0" step="0.5"> Jours</div>
+                    <i class="fas fa-grip-lines"></i>
+                </li>
+            </ul>
+
+            <h3>B. Mes Jours "OFF" :</h3>
+            <div id="unavailable-days-container">
+                <label for="unavailable-days">Sélectionnez vos jours d'indisponibilité (maintenez CTRL/CMD) :</label>
+                <select id="unavailable-days" multiple size="8"></select>
+            </div>
+            
+            <div id="planning-summary"></div>
+            <button id="generate-btn"><i class="fas fa-magic"></i> Générer Ma Feuille de Route !</button>
+        </section>
+
+        <section id="planning-section" style="display:none;">
+            <h2><i class="fas fa-calendar-alt"></i> 3. Votre Feuille de Route Personnalisée</h2>
+            <div id="planning-output"></div>
+        </section>
+
+        <section id="conseils-section">
+            <h2><i class="fas fa-heartbeat"></i> 4. La Boîte à Outils du Succès & du Bien-Être</h2>
+            <p>La réussite est un marathon, pas un sprint. Prenez soin de la machine la plus importante : vous ! ❤️</p>
+            <div class="accordion">
+                <div class="accordion-item"><div class="accordion-header"><span>💆‍♀️ Prenez soin de vous : Le Mental & le Corps</span><span class="icon">+</span></div><div class="accordion-content"><ul><li><strong>Déconnectez pour de vrai :</strong> Une journée au Salon Zen, une escapade au Salon du Chocolat... Aérez-vous l'esprit ! Ce n'est pas du temps perdu, c'est de l'énergie gagnée.</li><li><strong>Chouchoutez-vous :</strong> Manucure, pédicure, un petit massage même à 20€... Votre corps aussi subit le stress. Lui offrir une pause, c'est booster votre mental.</li><li><strong>Bougez !</strong> Une session de sport, même courte, libère des endorphines. C'est le meilleur anti-stress naturel. Dansez dans votre salon, marchez, courez... mais bougez ! 💃</li><li><strong>Respectez votre rythme :</strong> Si vous êtes plus productif la nuit, organisez-vous pour dormir le matin. Un cerveau reposé est un cerveau efficace. 🦉</li></ul></div></div>
+                <div class="accordion-item"><div class="accordion-header"><span>🍽️ Alimentation & Énergie : Le Carburant du Cerveau</span><span class="icon">+</span></div><div class="accordion-content"><ul><li><strong>Halte au sucre rapide !</strong> Les pics de sucre sont suivis de "crashs" de fatigue. Privilégiez les sucres lents, les fruits et les légumes pour une énergie stable.</li><li><strong>La pause déjeuner est SACRÉE :</strong> Prenez au moins 45 minutes, loin de votre écran. Mangez sainement, en pleine conscience.</li><li><strong>Hydratez-vous :</strong> L'eau est le carburant de votre cerveau. Gardez une bouteille à portée de main. 💧</li></ul></div></div>
+                <div class="accordion-item"><div class="accordion-header"><span>👨‍👩‍👧‍👦 Gérez votre entourage : Votre Team de Supporters</span><span class="icon">+</span></div><div class="accordion-content"><ul><li><strong>Impliquez votre famille :</strong> Expliquez-leur que c'est un projet commun. Cette certification est un investissement pour un avenir meilleur : plus de confort, plus de projets, plus de sérénité. Faites-en vos premiers supporters ! 📣</li><li><strong>Planifiez des moments de qualité :</strong> Bloquez des créneaux "100% sans examen" avec vos proches. Ces moments rechargent les batteries affectives.</li></ul></div></div>
+            </div>
+        </section>
+        
+        <section id="community-section">
+            <h2><i class="fas fa-users"></i> 5. Espace Communauté & Liens Utiles</h2>
+            <div class="community-box" style="border-left-color: var(--terracotta);">
+                <h3>🔥💨 Message Important pour la Période des Évaluations 💨🔥</h3>
+                <p>Pour préserver l'intégrité de notre travail et le respect mutuel, une règle d'or s'applique sur nos groupes durant les périodes d'évaluation :</p>
+                <ul>
+                    <li>✅ Les groupes WhatsApp & Discord restent ouverts pour <strong>l'entraide morale, le soutien et l'organisation</strong>. On est là pour s'encourager ! 💪</li>
+                    <li>❌ **AUCUNE question ou discussion liée au contenu des évaluations** n'est autorisée.</li>
+                    <li>🚫 Toute personne tentant de contourner cette règle sera **bannie des groupes**. C'est une mesure de protection pour tous, afin de respecter le règlement de notre formation et de garantir que personne ne soit pénalisé à cause d'un seul individu. On est des adultes, on agit comme tels.</li>
+                </ul>
+            </div>
+            <div class="community-box" style="border-left-color: var(--bronze);">
+                <h3>🎉 N’oubliez pas de respirer et de vous faire plaisir ! 🎉</h3>
+                <p>Profitez de ces moments pour recharger les batteries. Voici quelques idées :</p>
+                <ul>
+                    <li>🔹 <a href="https://www.salon-zen.fr/" target="_blank" class="other-link">Salon ZEN</a> : Pour une pause détente.</li>
+                    <li>🔹 <a href="https://www.parisaudiovideoshow.com/" target="_blank" class="other-link">Audio-Vidéo Show</a> : Pour les passionnés.</li>
+                    <li>🔹 <a href="https://www.salon-du-chocolat.com/" target="_blank" class="other-link">Salon du Chocolat</a> : Pour les gourmands (pensez au CE !).</li>
+                </ul>
+            </div>
+             <div class="community-box" style="border-left-color: var(--bleu-nuit);">
+                <h3>📈 Rejoignez le "Payroll Boss Elite Club" : Groupe d'entraide Paie</h3>
+                <p>Partagez, apprenez et progressez avec d'autres passionnés et professionnels de la paie.</p>
+                <ul>
+                    <li><a href="https://discord.gg/4XFpkQDzde" target="_blank" class="discord-link"><i class="fab fa-discord"></i>Lien d'invitation Discord</a></li>
+                    <li><a href="https://chat.whatsapp.com/EtV0ux5ipAG5JDhopzo0ut" target="_blank" class="whatsapp-link"><i class="fab fa-whatsapp"></i>Lien d'invitation WhatsApp</a></li>
+                </ul>
+                 <p>Et pour aller plus loin :</p>
+                 <ul>
+                    <li><a href="https://projettechacademy.github.io/Paie_001_Gestionnaire-de-Paie-Bienvenue/" target="_blank" class="other-link">Bienvenue - Gestionnaire de Paie</a></li>
+                     <li><a href="https://docs.google.com/spreadsheets/d/1YhIAY5T-QtgUosEMBvwaXpnJy1PZTz-g/edit?usp=sharing&ouid=108746249066667293401&rtpof=true&sd=true" target="_blank" class="other-link">Document partagé (Google Sheets)</a></li>
+                 </ul>
+            </div>
+        </section>
+
+        <section id="quiz-section">
+            <h2><i class="fas fa-brain"></i> 6. Testez votre Mindset de Réussite !</h2>
+            <div id="quiz-form">
+                <div class="quiz-question"><p><strong>1. Le Jour-J de la réception des sujets, quelle est votre priorité absolue ?</strong></p><div class="quiz-options"><label><input type="radio" name="q1" value="a"> Foncez sur le bloc le plus dur.</label><label><input type="radio" name="q1" value="b"> Faire un audit complet des sujets et fichiers pour planifier.</label><label><input type="radio" name="q1" value="c"> Demander sur le groupe si les sujets sont difficiles.</label></div></div>
+                <div class="quiz-question"><p><strong>2. Quelle est la fonction de la "période tampon" de 3 jours à la fin ?</strong></p><div class="quiz-options"><label><input type="radio" name="q2" value="a"> Commencer un bloc en retard.</label><label><input type="radio" name="q2" value="b"> Relire, finaliser et soumettre la veille pour éviter tout stress technique.</label><label><input type="radio" name="q2" value="c"> Se reposer avant la deadline.</label></div></div>
+                <div class="quiz-question"><p><strong>3. Pendant cette période intense, vous vous sentez épuisé(e). Que faites-vous ?</strong></p><div class="quiz-options"><label><input type="radio" name="q3" value="a"> Je force en buvant 10 cafés.</label><label><input type="radio" name="q3" value="b"> Je m'accorde une vraie pause planifiée (sport, sortie, repos) pour recharger les batteries.</label><label><input type="radio" name="q3" value="c"> Je culpabilise de ne pas travailler.</label></div></div>
+                <div class="quiz-question"><p><strong>4. Un camarade pose une question sur un calcul de l'épreuve sur le groupe WhatsApp. Votre réaction ?</strong></p><div class="quiz-options"><label><input type="radio" name="q4" value="a"> Je lui réponds en privé pour l'aider.</label><label><input type="radio" name="q4" value="b"> Je ne réponds pas, afin de respecter les règles du groupe et de protéger tout le monde.</label><label><input type="radio" name="q4" value="c"> Je lui donne un indice pour le mettre sur la voie.</label></div></div>
+                <button id="submit-quiz-btn">Je valide mon Mindset !</button>
+                <div id="quiz-result"></div>
+            </div>
+        </section>
+        
+        <section id="feedback-section">
+            <h2><i class="fas fa-bullhorn"></i> 7. Contribuez & Impliquez-vous !</h2>
+            <p>Cet outil est fait pour la communauté. Votre avis est précieux pour l'améliorer !</p>
+            <p>Une suggestion ? Une idée d'amélioration ? Rejoignez les discussions sur <strong>WhatsApp</strong> et <strong>Discord</strong> ou envoyez-moi un message privé !</p>
+            <div class="warning" style="background-color: var(--bleu-nuit); text-align: left;">
+                <h3 style="color: white; text-align: center;">📢 Recherche Administrateur/Administratrice - Promo Copernic !</h3>
+                <p>Pour assurer une bonne dynamique et un soutien continu, nous cherchons un(e) volontaire de la promo Copernic pour devenir administrateur/administratrice des groupes, rejoignant ainsi l'équipe (1 admin par promo : De Vinci, Pasteur, Copernic). Votre rôle : animer, proposer, et veiller à la bonne ambiance.</p>
+                <p>Si l'aventure vous tente, envoyez-moi un **message privé sur WhatsApp** pour qu'on en discute !</p>
+            </div>
+        </section>
+
+        <footer><p style="text-align: center; margin-top: 40px; font-style: italic;">Créé avec ❤️ pour tous les futurs Gestionnaires de Paie. La réussite est un projet d'équipe !</p></footer>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        const SESSIONS = {
+            "de-vinci": {
+                s1: { start: '2025-10-27', end: '2025-11-21' },
+                s2: { start: '2026-01-13', end: '2026-01-30' }
+            },
+            "pasteur": { s1: { start: null, end: null } },
+            "copernic": { s1: { start: null, end: null } }
+        };
+
+        const promoSelect = document.getElementById('promo-select');
+        const sessionSelect = document.getElementById('session-select');
+        const session2Options = document.getElementById('session-2-options');
+        const generateBtn = document.getElementById('generate-btn');
+        const planningSection = document.getElementById('planning-section');
+        const planningOutput = document.getElementById('planning-output');
+        const unavailableDaysSelect = document.getElementById('unavailable-days');
+        const blocOrderList = document.getElementById('bloc-order-container');
+        const planningSummary = document.getElementById('planning-summary');
+
+        function updateSessionOptions() {
+            const promo = promoSelect.value;
+            const sessionsForPromo = SESSIONS[promo] || {};
+            const currentSession = sessionSelect.value;
+            
+            sessionSelect.innerHTML = '';
+            
+            ['s1', 's2'].forEach(sessionKey => {
+                if(sessionsForPromo[sessionKey]){
+                    const sessionData = sessionsForPromo[sessionKey];
+                    const text = sessionKey === 's1' ? 'Session 1' : 'Session 2 (Rattrapage)';
+                    const dateText = sessionData.start 
+                        ? `(${formatDateShort(new Date(sessionData.start))} - ${formatDateShort(new Date(sessionData.end))})` 
+                        : "(Dates à venir)";
+                    sessionSelect.add(new Option(`${text} ${dateText}`, sessionKey));
+                }
+            });
+            
+            sessionSelect.value = currentSession in sessionsForPromo ? currentSession : 's1';
+            updateUIForSession();
+        }
+
+        function updateUIForSession() {
+            const isSession2 = sessionSelect.value === 's2';
+            session2Options.style.display = isSession2 ? 'block' : 'none';
+            document.querySelectorAll('.validated-bloc-cb').forEach(cb => {
+                cb.addEventListener('change', updateBlocVisibility);
+            });
+            updateBlocVisibility();
+            updateUnavailableDaysSelector();
+        }
+
+        function updateBlocVisibility() {
+            const validatedBlocs = sessionSelect.value === 's2' ? 
+                [...document.querySelectorAll('.validated-bloc-cb:checked')].map(cb => cb.dataset.bloc) : [];
+            
+            document.querySelectorAll('#bloc-order-container li').forEach(li => {
+                li.style.display = validatedBlocs.includes(li.dataset.bloc) ? 'none' : 'flex';
+            });
+            updatePlanningSummary();
+        }
+
+        function updateUnavailableDaysSelector() {
+            unavailableDaysSelect.innerHTML = '';
+            const sessionInfo = SESSIONS[promoSelect.value][sessionSelect.value];
+            if (!sessionInfo || !sessionInfo.start) {
+                planningSummary.textContent = "Dates de session non définies.";
+                return;
+            };
+
+            const startDate = new Date(sessionInfo.start);
+            startDate.setDate(startDate.getDate() + 1);
+            const endDate = new Date(sessionInfo.end);
+            endDate.setDate(endDate.getDate() - 4); // exclude buffer + submission
+
+            let currentDate = new Date(startDate);
+            while (currentDate <= endDate) {
+                const option = document.createElement('option');
+                option.value = currentDate.toISOString().split('T')[0];
+                option.textContent = formatDate(currentDate);
+                unavailableDaysSelect.appendChild(option);
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            updatePlanningSummary();
+        }
+        
+        function getAvailableProductionDays() {
+            const sessionInfo = SESSIONS[promoSelect.value][sessionSelect.value];
+            if (!sessionInfo || !sessionInfo.start) return 0;
+            
+            const startDate = new Date(sessionInfo.start);
+            startDate.setDate(startDate.getDate() + 1); 
+            const endDate = new Date(sessionInfo.end);
+            endDate.setDate(endDate.getDate() - 4); 
+
+            const unavailableDates = [...unavailableDaysSelect.options].filter(o => o.selected).map(o => o.value);
+            let count = 0;
+            let current = new Date(startDate);
+            while (current <= endDate) {
+                if (!unavailableDates.includes(current.toISOString().split('T')[0])) {
+                    count++;
+                }
+                current.setDate(current.getDate() + 1);
+            }
+            return count;
+        }
+
+        function updatePlanningSummary() {
+            const availableDays = getAvailableProductionDays();
+            let allocatedDays = 0;
+            document.querySelectorAll('#bloc-order-container li').forEach(li => {
+                if (li.style.display !== 'none') {
+                    const input = li.querySelector('.duration-input');
+                    allocatedDays += parseFloat(input.value) || 0;
+                }
+            });
+            
+            if (availableDays > 0) {
+                planningSummary.textContent = `Jours de production disponibles : ${availableDays} | Jours alloués : ${allocatedDays}`;
+                if (allocatedDays > availableDays) {
+                    planningSummary.style.color = 'var(--terracotta)';
+                } else if (allocatedDays < availableDays) {
+                    planningSummary.style.color = 'var(--orange)';
+                } else {
+                    planningSummary.style.color = '#27ae60';
+                }
+            } else {
+                planningSummary.textContent = "Veuillez sélectionner une session avec des dates définies.";
+                planningSummary.style.color = 'var(--texte-sombre)';
+            }
+        }
+
+        promoSelect.addEventListener('change', updateSessionOptions);
+        sessionSelect.addEventListener('change', updateUIForSession);
+        unavailableDaysSelect.addEventListener('change', updatePlanningSummary);
+        blocOrderList.addEventListener('input', updatePlanningSummary);
+        
+        let draggedItem = null;
+        blocOrderList.addEventListener('dragstart', (e) => {
+             if (e.target.closest('li')) {
+                draggedItem = e.target.closest('li');
+                setTimeout(() => { draggedItem.classList.add('dragging'); }, 0);
+            }
+        });
+        blocOrderList.addEventListener('dragend', () => { if (draggedItem) { draggedItem.classList.remove('dragging'); draggedItem = null; } });
+        blocOrderList.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            const afterElement = getDragAfterElement(blocOrderList, e.clientY);
+            if (draggedItem) {
+                if (afterElement == null) { blocOrderList.appendChild(draggedItem); } 
+                else { blocOrderList.insertBefore(draggedItem, afterElement); }
+            }
+        });
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('li:not(.dragging)')];
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) { return { offset: offset, element: child }; } 
+                else { return closest; }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        generateBtn.addEventListener('click', () => {
+            const sessionInfo = SESSIONS[promoSelect.value][sessionSelect.value];
+            if (!sessionInfo || !sessionInfo.start) {
+                alert("Les dates pour cette session ne sont pas encore définies.");
+                return;
+            }
+
+            const availableDays = getAvailableProductionDays();
+            let allocatedDays = 0;
+            document.querySelectorAll('#bloc-order-container li').forEach(li => {
+                if (li.style.display !== 'none') {
+                    allocatedDays += parseFloat(li.querySelector('.duration-input').value) || 0;
+                }
+            });
+            
+            if (allocatedDays > availableDays) {
+                alert(`Attention, vous avez alloué ${allocatedDays} jours, mais seulement ${availableDays} sont disponibles ! Veuillez ajuster.`);
+                return;
+            }
+
+            const blocOrder = [...blocOrderList.querySelectorAll('li')]
+                .filter(li => li.style.display !== 'none')
+                .map(item => ({ name: item.dataset.bloc, duration: parseFloat(item.querySelector('.duration-input').value) || 0 }));
+            
+            const startDate = new Date(sessionInfo.start);
+            const endDate = new Date(sessionInfo.end);
+            
+            const unavailableDates = [...unavailableDaysSelect.options].filter(o => o.selected).map(o => o.value);
+            
+            const auditDay = new Date(startDate);
+            const submissionDay = new Date(endDate);
+            submissionDay.setDate(submissionDay.getDate() - 1);
+            const reviewStartDay = new Date(submissionDay);
+            reviewStartDay.setDate(reviewStartDay.getDate() - 2);
+
+            let workDays = [];
+            let currentDay = new Date(startDate);
+            currentDay.setDate(currentDay.getDate() + 1);
+
+            while (currentDay < reviewStartDay) {
+                if (!unavailableDates.includes(currentDay.toISOString().split('T')[0])) {
+                    workDays.push(new Date(currentDay));
+                }
+                currentDay.setDate(currentDay.getDate() + 1);
+            }
+            
+            let html = `
+                <div class="phase-card phase-discovery">
+                    <div class="phase-header"><i class="fas fa-map-signs"></i><div><h3 class="phase-title">Phase 0 : Audit Initial du Projet</h3><p class="phase-dates">${formatDate(auditDay, { weekday: 'long', day: 'numeric', month: 'long' })}</p></div></div>
+                    <ul><li>Vérification de tous les fichiers d'examen.</li><li>Lecture approfondie des sujets pour définir le périmètre du projet.</li><li>Analyse des "copies à rendre" pour visualiser la structure des livrables.</li></ul>
+                </div>
+            `;
+            
+            let currentDayIndex = 0;
+            blocOrder.forEach((bloc, index) => {
+                const info = getGenericBlocInfo(bloc.name);
+                if(bloc.duration <= 0) return;
+
+                const daysToTake = Math.ceil(bloc.duration);
+                const phaseStartDate = workDays[currentDayIndex];
+                let endIndex = currentDayIndex + daysToTake - 1;
+                const phaseEndDate = workDays[endIndex];
+                
+                if (!phaseStartDate || !phaseEndDate) return;
+
+                html += `
+                    <div class="phase-card ${info.phaseClass}">
+                        <div class="phase-header"><i class="fas ${info.icon}"></i><div><h3 class="phase-title">Phase ${index + 1} : ${info.title}</h3><p class="phase-dates">${formatDateRange(phaseStartDate, phaseEndDate)} (${bloc.duration} jours)</p></div></div>
+                        <p><strong>Missions principales (généralistes) :</strong></p><ul>${info.tasks.map(task => `<li>${task}</li>`).join('')}</ul>
+                    </div>
+                `;
+                currentDayIndex = endIndex + 1;
+            });
+             
+             if(allocatedDays < availableDays){
+                 const remainingDays = availableDays - allocatedDays;
+                 html += `<div class="warning" style="background-color: var(--bleu-ciel);"><i class="fas fa-info-circle"></i> Vous avez ${remainingDays} jour(s) de marge dans votre planning de production. Parfait pour les imprévus !</div>`;
+             }
+
+             html += `
+                <div class="phase-card phase-review">
+                    <div class="phase-header"><i class="fas fa-check-double"></i><div><h3 class="phase-title">Phase Finale : Contrôle Qualité & Soumission</h3><p class="phase-dates">${formatDateRange(reviewStartDay, submissionDay)} (3 jours)</p></div></div>
+                    <ul><li><strong>Jours 1 & 2 :</strong> Relecture croisée de tous les blocs et dernière répétition de l'oral.</li><li><strong>Jour 3 (Jour J-1) :</strong> Packaging (vérification des noms, compression .zip) et **soumission le ${formatDate(submissionDay, { weekday: 'long', day: 'numeric', month: 'long' })} sans stress**.</li></ul>
+                    <div class="warning"><i class="fas fa-stopwatch"></i> N'attendez JAMAIS la deadline ! Visez une soumission la veille.</div>
+                </div>
+            `;
+            
+            html += `
+                 <div class="phase-card phase-submit">
+                    <div class="phase-header"><i class="fas fa-flag-checkered"></i><div><h3 class="phase-title">DEADLINE OFFICIELLE</h3><p class="phase-dates">${formatDate(endDate, { weekday: 'long', day: 'numeric', month: 'long' })}</p></div></div>
+                    <p>En ayant soumis la veille, ce jour-là, vous êtes déjà en train de célébrer ! 🥳</p>
+                </div>
+            `;
+
+
+            planningOutput.innerHTML = html;
+            planningSection.style.display = 'block';
+            planningSection.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        function getGenericBlocInfo(blocName) {
+            const info = {
+                'Bloc 1': { title: 'Technique de Paie', tasks: ["Paramétrage du dossier de paie et intégration des variables","Calcul détaillé de plusieurs bulletins de paie complexes","Établissement du livre de paie et des tableaux de déclarations sociales","Comptabilisation de la paie et analyse des écarts"], icon: 'fa-calculator', phaseClass: 'phase-bloc-1'},
+                'Bloc 2': { title: 'Gestion Administrative', tasks: ["Rédaction d'un contrat de travail et formalités d'embauche","Calcul d'un solde de tout compte (rupture, départ...)","Gestion des dossiers du personnel (checklist, RGPD)","Rédaction de communications professionnelles (internes/externes)"], icon: 'fa-folder-open', phaseClass: 'phase-bloc-2'},
+                'Bloc 3': { title: 'Analyse & Veille', tasks: ["**Partie Écrite :** Audit de paie, calcul d'effectif, création d'indicateurs sociaux, rapport de veille.","**Partie Orale :** Analyse, création du support de présentation, et entraînement à la soutenance."], icon: 'fa-chart-line', phaseClass: 'phase-bloc-3'}
+            };
+            return info[blocName];
+        }
+        
+        function formatDate(date, options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) {
+            if(!date) return "";
+            return new Intl.DateTimeFormat('fr-FR', options).format(date);
+        }
+        function formatDateShort(date) {
+            if(!date) return "";
+            return new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(date);
+        }
+        
+        function formatDateRange(start, end) {
+            if (!start) return "Période à définir";
+            if (!end || start.toDateString() === end.toDateString()) return formatDate(start);
+            const startStr = new Intl.DateTimeFormat('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }).format(start);
+            const endStr = formatDate(end);
+            return `${startStr} au ${endStr}`;
+        }
+
+        // --- ACCORDION & QUIZ ---
+        document.querySelectorAll('.accordion-header').forEach(h => h.addEventListener('click', () => { 
+            const item = h.parentElement;
+            const currentlyActive = document.querySelector('.accordion-item.active');
+            if(currentlyActive && currentlyActive !== item) {
+                currentlyActive.classList.remove('active');
+            }
+            item.classList.toggle('active'); 
+        }));
+        document.getElementById('submit-quiz-btn').addEventListener('click', () => {
+            let score = 0;
+            const answers = {
+                q1: 'b',
+                q2: 'b',
+                q3: 'b',
+                q4: 'b'
+            };
+            for (let q in answers) {
+                const selected = document.querySelector(`input[name="${q}"]:checked`);
+                if (selected && selected.value === answers[q]) {
+                    score++;
+                }
+            }
+            const resultDiv = document.getElementById('quiz-result');
+            resultDiv.style.display = 'block';
+            if (score === 4) {
+                resultDiv.innerHTML = "🎉 BRAVO ! Vous avez un mindset de champion ! Vous êtes prêt(e) à piloter votre réussite. On est là pour se soutenir moralement, et vous avez tout compris ! 💪";
+                resultDiv.style.backgroundColor = 'rgba(39, 174, 96, 0.1)'; resultDiv.style.color = '#27ae60'; resultDiv.style.border = '2px solid #27ae60';
+            } else {
+                resultDiv.innerHTML = "😉 Pas mal ! L'esprit est là. Relisez bien les conseils et les règles du groupe. Le plus important : on se soutient, mais on ne se donne pas les réponses. La réussite est personnelle, le soutien est collectif !";
+                resultDiv.style.backgroundColor = 'rgba(243, 156, 18, 0.1)'; resultDiv.style.color = 'var(--orange)'; resultDiv.style.border = '2px solid var(--orange)';
+            }
+        });
+        
+        // Initial setup
+        updateSessionOptions();
+    });
+    </script>
+</body>
+</html>
+
